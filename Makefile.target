@@ -205,6 +205,9 @@ obj-y += pcnet.o
 obj-y += rtl8139.o
 obj-y += e1000.o
 
+# PCI VMSocket
+obj-y += vmsocket.o
+
 # Hardware support
 obj-i386-y = ide/core.o ide/qdev.o ide/isa.o ide/pci.o ide/piix.o
 obj-i386-y += pckbd.o $(sound-obj-y) dma.o

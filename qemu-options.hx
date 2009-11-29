@@ -1587,6 +1587,15 @@ The default device is @code{vc} in graphical mode and @code{stdio} in
 non graphical mode.
 ETEXI
 
+DEF("vmsocket", HAS_ARG, QEMU_OPTION_vmsocket, \
+    "-vmsocket unix:file connects to AF_UNIX socket PCI card server \
+    listening on 'path' and exposes as a PCI device in the guest\n")
+STEXI
+@item -ivshmem unix:@var{file}
+Connects to AF_UNIX socket PCI card server listening on 'path' and exposes \
+as a PCI device in the guest.
+ETEXI
+
 DEF("pidfile", HAS_ARG, QEMU_OPTION_pidfile, \
     "-pidfile file   write PID to 'file'\n")
 STEXI

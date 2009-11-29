@@ -169,4 +169,9 @@ void extboot_init(BlockDriverState *bs, int cmd);
 
 int cpu_is_bsp(CPUState *env);
 
+/* vmsocket.c */
+extern int vmsocket_enabled;
+extern char *vmsocket_device;
+void pci_vmsocket_init(PCIBus *bus);
+
 #endif

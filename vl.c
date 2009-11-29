@@ -215,6 +215,8 @@ int no_quit = 0;
 CharDriverState *serial_hds[MAX_SERIAL_PORTS];
 CharDriverState *parallel_hds[MAX_PARALLEL_PORTS];
 CharDriverState *virtcon_hds[MAX_VIRTIO_CONSOLES];
+//CharDriverState *vmsocket_chardev;
+
 #ifdef TARGET_I386
 int win2k_install_hack = 0;
 int rtc_td_hack = 0;
@@ -285,6 +287,9 @@ uint8_t qemu_uuid[16];
 
 static QEMUBootSetHandler *boot_set_handler;
 static void *boot_set_opaque;
+
+/* VMSocket */
+int vmsocket_enabled = 0;
 
 /***********************************************************/
 /* x86 ISA bus support */
@@ -5502,6 +5507,10 @@ int main(int argc, char **argv, char **envp)
                     fclose(fp);
                     break;
                 }
+            case QEMU_OPTION_vmsocket:
+                vmsocket_device = strdup(optarg);
+                vmsocket_enabled = 1;
+                break;
             }
         }
     }
@@ -5802,6 +5811,12 @@ int main(int argc, char **argv, char **envp)
                 exit(1);
             }
         }
+    }
+
+
+    if (vmsocket_enabled) {
+        vmsocket_init(vmsocket_device);
+        ram_size += vmsocket_get_buffer_size();
     }
 
     module_call_init(MODULE_INIT_DEVICE);

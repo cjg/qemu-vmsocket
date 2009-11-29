@@ -1154,6 +1154,9 @@ static void pc_init1(ram_addr_t ram_size,
         }
     }
 
+    if (pci_enabled && vmsocket_enabled)
+        pci_vmsocket_init(pci_bus);
+
     rtc_state = rtc_init(2000);
 
     qemu_register_boot_set(pc_boot_set, rtc_state);
