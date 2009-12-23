@@ -70,19 +70,16 @@ void vmsocket_init(const char * optarg) {
 static void vmsocket_write(VMSocketState *s, uint32_t count) 
 {
 	s->status = write(s->fd, s->outbuffer, count);
+	VMSOCKET_DPRINTF("Write request: count: %u status: %d\n", count, 
+			 s->status);
 }
 
 static void vmsocket_read(VMSocketState *s, uint32_t count) 
 {
 	size_t readed = 0;
-	struct pollfd fds = {
-		.fd = s->fd,
-		.events = POLLIN,
-		.revents = 0,
-	};
-	if(poll(&fds, 1, 100) > 0)
-		readed = read(s->fd, s->inbuffer, count);
-	VMSOCKET_DPRINTF("Read request: %u readed: %u\n", count, readed);
+	readed = read(s->fd, s->inbuffer, count);
+	VMSOCKET_DPRINTF("Read request: %u readed: %u\n", (unsigned) count, 
+			 (unsigned) readed);
 	s->status = readed;
 }
 
@@ -153,16 +150,18 @@ static void vmsocket_region_map(PCIDevice *pci_dev, int region_num,
 
 	switch(region_num) {
 	case 0: 
-		VMSOCKET_DPRINTF("Register regs at 0x%x.\n", addr);
+		VMSOCKET_DPRINTF("Register regs at 0x%x.\n", (unsigned) addr);
 		cpu_register_physical_memory(addr, 0x100, s->regs_addr);
 		break;
 	case 1:
-		VMSOCKET_DPRINTF("Register input buffer at 0x%x.\n", addr);
+		VMSOCKET_DPRINTF("Register input buffer at 0x%x.\n", 
+				 (unsigned) addr);
 		cpu_register_physical_memory(addr, s->inbuffer_size, 
 					     s->inbuffer_offset);
 		break;
 	case 2:
-		VMSOCKET_DPRINTF("Register output buffer at 0x%x.\n", addr);
+		VMSOCKET_DPRINTF("Register output buffer at 0x%x.\n", 
+				 (unsigned) addr);
 		cpu_register_physical_memory(addr, s->outbuffer_size, 
 					     s->outbuffer_offset);
 		break;
